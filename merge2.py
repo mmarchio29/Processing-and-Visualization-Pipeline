@@ -62,8 +62,14 @@ print("Columns in additional CSV DataFrame:", additional_df.columns)
 
 # Check if the columns exist before merging
 if shared_column_excel in merged_excel_df.columns and shared_column_csv in additional_df.columns:
-    final_merged_df = pd.merge(merged_excel_df, additional_df, left_on=shared_column_excel, right_on=shared_column_csv, how='outer')
+    final_merged_df = pd.merge(merged_excel_df, additional_df, left_on=shared_column_excel, right_on=shared_column_csv, how='inner')
     # Save the final merged DataFrame to an Excel file
+
+     # Specify the columns to drop from the final merged DataFrame
+    columns_to_drop = ['ID', 'Title_y', 'Publication', 'Date_y']  
+    final_merged_df.drop(columns=columns_to_drop, inplace=True)
+
+    # Export file
     final_merged_df.to_excel(final_output_file, index=False)
     print(f"Final merged data saved to {final_output_file}")
 else:
